@@ -12,7 +12,7 @@ model.eval()
 
 index = faiss.IndexFlatL2(1024)
 
-database = {}
+storage = {}
 
 app = FastAPI()
 
@@ -29,7 +29,7 @@ async def upload_image(image: UploadFile, image_class: str):
 
     emb = outputs.pooler_output.numpy()
 
-    database[image_id] = {
+    storage[image_id] = {
         "vector": emb.tolist(),
         "class": image_class
     }
@@ -54,21 +54,16 @@ async def search_similar_image(image: UploadFile):
     D, I = index.search(emb, k=1)
 
     nearest_neighbor = {}
-    nearest_neighbor["id"] = list(database.keys())[I[0][0]]
-    nearest_neighbor["class"] = database[nearest_neighbor["id"]]["class"]
+    nearest_neighbor["id"] = list(storage.keys())[I[0][0]]
+    nearest_neighbor["class"] = storage[nearest_neighbor["id"]]["class"]
     nearest_neighbor["distance"] = float(D[0][0])
 
     return {"results": nearest_neighbor}
 
 
-@app.get("/images")
-async def get_images():
-    return {"database": database}
-
-
 @app.delete("/images")
 async def delete_images():
-    database.clear()
+    storage.clear()
     index.reset()
 
     return {"message": "All images deleted successfully"}
