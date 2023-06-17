@@ -15,8 +15,7 @@ async def upload_image(image: UploadFile, image_class: str):
     image_id = image.filename
     image = Image.open(io.BytesIO(contents))
     image_emb = embedding_service.process_image(image)
-    embedding_service.add_image(image_id, image_emb, image_class)
-    similarity_search_service.add_index(image_emb)
+    similarity_search_service.add_image(image_id,image_emb, image_class)
 
     return {"message": "Image saved successfully" }
 
@@ -30,7 +29,7 @@ async def search_similar_image(image: UploadFile):
 
 @app.delete("/images")
 async def delete_images():
-    embedding_service.delete_images()
+    similarity_search_service.delete_images()
 
     return {"message": "All images deleted successfully"}
 
