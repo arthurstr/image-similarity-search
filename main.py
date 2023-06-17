@@ -30,11 +30,11 @@ async def upload_image(image: UploadFile, image_class: str):
     emb = outputs.pooler_output.numpy()
 
     database[image_id] = {
-        #"vector": emb.tolist(),  # Convert NumPy array to list
+        "vector": emb.tolist(),
         "class": image_class
     }
 
-    # Add vector to the index
+
     index.add(emb)
 
     return {"message": "Image saved successfully" }
