@@ -1,6 +1,6 @@
 from PIL import Image
 import io
-async def get_pil_images(image):
+async def decode_image(image):
     contents = await image.read()
     image = Image.open(io.BytesIO(contents))
 

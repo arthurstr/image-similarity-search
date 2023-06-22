@@ -1,14 +1,12 @@
 import faiss
 class SimilaritySearchService:
-    def __init__(self, embedding_service):
-        self.embedding_service = embedding_service
+    def __init__(self):
         self.index = faiss.IndexFlatL2(1024)
         self.ids = []
         self.classes = []
 
     def search_similar_image(self, image):
-        image_emb = self.embedding_service.process_image(image)
-        D, I = self.index.search(image_emb, k=1)
+        D, I = self.index.search(image, k=1)
 
         nearest_neighbor = {}
         nearest_neighbor["id"] = self.ids[I[0][0]]
