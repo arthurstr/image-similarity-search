@@ -1,7 +1,10 @@
+from fastapi import UploadFile
 from PIL import Image
 import io
-async def decode_image(image):
-    contents = await image.read()
-    image = Image.open(io.BytesIO(contents))
 
+
+
+def decode_image(image: UploadFile) -> Image.Image:
+    contents = image.file.read()
+    image = Image.open(io.BytesIO(contents))
     return image

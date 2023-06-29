@@ -1,5 +1,7 @@
 import torch
 from transformers import AutoImageProcessor, AutoModel
+from PIL import Image
+from typing import Any
 
 class ImageEmbeddingService:
     def __init__(self):
@@ -7,7 +9,7 @@ class ImageEmbeddingService:
         self.model = AutoModel.from_pretrained("microsoft/swin-base-patch4-window12-384")
         self.model.eval()
 
-    def process_image(self, image):
+    def process_image(self, image: Image.Image) -> Any:
         inputs = self.processor(image.convert("RGB"), return_tensors="pt")
 
         with torch.no_grad():
@@ -15,4 +17,3 @@ class ImageEmbeddingService:
 
         emb = outputs.pooler_output.numpy()
         return emb
-
