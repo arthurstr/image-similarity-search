@@ -9,7 +9,7 @@ class ImageSimilaritySearchService :
         self.embedding_service = ImageEmbeddingService()
         self.similarity_search_service = SimilaritySearchService()
 
-    def upload_image(self, image: UploadFile , image_class : str) -> None:
+    def add_image(self, image: UploadFile , image_class : str) -> None:
         image_id = image.filename
         image_emb = self.embedding_service.process_image(decode_image(image))
         self.similarity_search_service.add_image(image_id, image_emb, image_class)
@@ -19,5 +19,5 @@ class ImageSimilaritySearchService :
         result = self.similarity_search_service.search_similar_image(image_emb)
         return result
 
-    def delete_images(self) -> None:
+    def reset_images(self) -> None:
         self.similarity_search_service.delete_images()

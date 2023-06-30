@@ -1,5 +1,6 @@
 import faiss
-from typing import Any, Dict, List
+import numpy as np
+from typing import Dict, Union, List
 
 class SimilaritySearchService:
     def __init__(self):
@@ -7,7 +8,7 @@ class SimilaritySearchService:
         self.ids: List[str] = []
         self.classes: List[str] = []
 
-    def search_similar_image(self, image: Any) -> Dict[str, Any]:
+    def search_similar_image(self, image: np.ndarray) -> Dict[str, Union[str, float]]:
         D, I = self.index.search(image, k=1)
 
         nearest_neighbor = {
@@ -18,7 +19,7 @@ class SimilaritySearchService:
 
         return nearest_neighbor
 
-    def add_image(self, image_id: str, emb: Any, image_class: str) -> None:
+    def add_image(self, image_id: str, emb: np.ndarray, image_class: str) -> None:
         self.ids.append(image_id)
         self.classes.append(image_class)
         self.index.add(emb)
