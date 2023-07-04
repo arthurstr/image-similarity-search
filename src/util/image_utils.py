@@ -4,7 +4,7 @@ import io
 
 
 
-def decode_image(image: UploadFile) -> Image.Image:
+def decode(image: UploadFile) -> Image.Image:
     contents = image.file.read()
     image = Image.open(io.BytesIO(contents))
     return image

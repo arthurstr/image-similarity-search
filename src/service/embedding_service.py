@@ -9,7 +9,7 @@ class ImageEmbeddingService:
         self.model = AutoModel.from_pretrained("microsoft/swin-base-patch4-window12-384")
         self.model.eval()
 
-    def process_image(self, image: Image.Image) -> np.ndarray:
+    def embed(self, image: Image.Image) -> np.ndarray:
         inputs = self.processor(image.convert("RGB"), return_tensors="pt")
 
         with torch.no_grad():

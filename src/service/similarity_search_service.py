@@ -1,30 +1,22 @@
-import faiss
-import numpy as np
-from typing import Dict, Union, List
+from fastapi import UploadFile
+from src.service.embedding_service import ImageEmbeddingService
+from src.service.body import SimilaritySearchService
+from src.util.image_utils import decode
 
-class SimilaritySearchService:
+class ImageSimilaritySearchService :
     def __init__(self):
-        self.index = faiss.IndexFlatL2(1024)
-        self.ids: List[str] = []
-        self.classes: List[str] = []
+        self.embedding_service = ImageEmbeddingService()
+        self.similarity_search_service = SimilaritySearchService()
 
-    def search_similar_image(self, image: np.ndarray) -> Dict[str, Union[str, float]]:
-        D, I = self.index.search(image, k=1)
+    def add(self, image: UploadFile , image_class : str) -> None:
+        image_id = image.filename
+        image_emb = self.embedding_service.embed(decode(image))
+        self.similarity_search_service.add(image_id, image_emb, image_class)
 
-        nearest_neighbor = {
-            "id": self.ids[I[0][0]],
-            "class": self.classes[I[0][0]],
-            "distance": float(D[0][0])
-        }
+    def search(self, image: UploadFile) -> dict:
+        image_emb = self.embedding_service.embed(decode(image))
+        result = self.similarity_search_service.search(image_emb)
+        return result
 
-        return nearest_neighbor
-
-    def add_image(self, image_id: str, emb: np.ndarray, image_class: str) -> None:
-        self.ids.append(image_id)
-        self.classes.append(image_class)
-        self.index.add(emb)
-
-    def delete_images(self) -> None:
-        self.ids.clear()
-        self.classes.clear()
-        self.index.reset()
+    def reset(self) -> None:
+        self.similarity_search_service.reset()
