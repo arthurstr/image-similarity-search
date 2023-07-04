@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI, UploadFile
 from starlette import status
 
-from src.service.similarity_search_service import ImageSimilaritySearchService
+from src.service.image_similarity_search_service import ImageSimilaritySearchService
 
 app = FastAPI()
 image_service = ImageSimilaritySearchService()

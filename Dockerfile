@@ -8,7 +8,7 @@ COPY ./requirements.txt /requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /requirements.txt
 
 #
-COPY ./src /src
+COPY ./src src
 
-ENTRYPOINT ["uvicorn", "src.controller.conttroller:app", "--host", "0.0.0.0", "--port", "80"]
+ENTRYPOINT ["uvicorn", "src.controller.controller:app", "--host", "0.0.0.0", "--port", "80"]
 
