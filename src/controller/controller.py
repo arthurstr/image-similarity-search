@@ -7,7 +7,7 @@ from src.service.image_similarity_search_service import ImageSimilaritySearchSer
 app = FastAPI()
 image_service = ImageSimilaritySearchService()
 
-@app.put("/add/{image_id}")
+@app.put("/add")
 def add(image: UploadFile, image_class: str) -> int:
     image_service.add(image, image_class)
     return status.HTTP_201_CREATED
@@ -23,5 +23,4 @@ def search(image: UploadFile) -> dict:
 def reset() -> int:
     image_service.reset()
     return status.HTTP_200_OK
-
 

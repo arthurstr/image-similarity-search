@@ -1,5 +1,5 @@
 from fastapi import UploadFile
-from src.service.embedding_service import ImageEmbeddingService
+from src.service.image_embedding_service import ImageEmbeddingService
 from src.service.similarity_search_service import SimilaritySearchService
 from src.util.image_utils import decode
 
